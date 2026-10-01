@@ -1,0 +1,18 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Oversized archives (GitHub hard limit 100 MB). Dataset is already in Project_2_Dataset/.
+testingpj-2.zip
+cellmatch_hpc.tar.gz
+
+# Local HPC / Colab scratch (recreated by the jobs)
+cache/
+logs/
+miniforge/
+env/
+.pip_cache/
+cellpose_weights/
+*.partial
