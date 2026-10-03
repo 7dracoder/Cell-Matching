@@ -1,8 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=cellmatch-cpu
+#SBATCH --partition=n2c48m24
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=64G
+#SBATCH --mem=20G
 #SBATCH --time=24:00:00
+#SBATCH --requeue
 #SBATCH --output=logs/%x-%j.out
 # Search on cached held-out predictions, then submission.csv. CPU only, so no GPU sits idle.
 set -euo pipefail

@@ -1,8 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=cellmatch-setup
+#SBATCH --partition=n2c48m24
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00
+#SBATCH --requeue
 #SBATCH --output=logs/%x-%j.out
 # Installs on a compute node: Torch login nodes cap memory at 2 GB and run a different OS image.
 set -euo pipefail
