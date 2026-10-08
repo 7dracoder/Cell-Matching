@@ -10,6 +10,11 @@ from pathlib import Path
 
 import numpy as np
 
+# In Colab the validation script is uploaded to /content while the dataset and
+# current project modules live in /content/work. Keep local execution unchanged.
+if Path("/content/work/Project_2_Dataset").is_dir():
+    sys.path.insert(0, "/content/work")
+
 from cellmatch import ROOT, read_image
 
 

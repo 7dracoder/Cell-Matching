@@ -1,0 +1,3 @@
+# Local test dependencies (tests/unlock), pinned to the versions in the local .venv
+pytest==9.1.1
+hypothesis==6.168.5

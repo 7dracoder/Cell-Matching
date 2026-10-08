@@ -21,62 +21,287 @@ score = 0.5 * (PQ_invivo + PQ_exvivo) / 2 + 0.5 * F1_matching
 | 0.37958 | Notebook v2: cell-density cross-correlation registration (`register_ncc`) added as a candidate; checkpoints saved to Drive |
 | 0.40202 | Notebook v3: Cellpose-SAM fine-tuned (chosen for in-vivo, held-out PQ 0.727 vs 0.590 U-Net), per-mouse consistency gate (chosen: 0.10). CV estimate 0.450 |
 | 0.40870 | Notebook v4: hybrid Cellpose masks filtered by U-Net probability (chosen for ex-vivo, PQ 0.382), ratio test for pairs (2.0), wider grids, PQ error breakdown. CV estimate 0.485 |
-| pending | Notebook v5: consistency check anchored on the densest cluster (fixes a test mouse that got zero pairs), longer Cellpose fine-tune competing with the current one, test-time Cellpose ensemble of final + fold models, grids widened at the edges again |
+| ~0.45074 | Notebook / Cellpose ensemble masks + older matching (baseline masks used by later rematches) |
+| 0.44201 | Rematch only: Hough vote + window registration + pair classifier, but low-margin regions included → hurt F1 |
+| **0.45520** | Same rematch with **margin ≥ 3** gate (25/25 correct on train). File: `submission_v7.csv` |
+| 0.39142 / 0.38233 | Retrained / ensembled ex-vivo masks (`ensb`, `v2b`): smaller ex-vivo cells lost IoU > 0.75 TPs |
+| 0.47191 | `submission_v7_grow30.csv`: grow ex-vivo masks into the top 30% of boundary ring by cellprob |
+| 0.47488 | `submission_v7_grow15.csv`: same as v7 pairs/IDs, grow ex-vivo by top 15% cellprob ring |
+| **0.48893** | **`submission_v10_cpgate.csv` (current best verified):** v7_grow15 masks + cellprob-evidence region gate (unlocks `d7a97c/dd13e1`) |
+| 0.44957 | `submission_v11_pairshrink25.csv`: v10 + tighter boundary for the 316 paired ex-vivo cells. Held-out said 0.501 → 0.546; public fell by 0.039. Test mice do **not** share the training mice's tight convention for paired cells |
+| not submitted | `submission_v11_pairbase.csv`: paired cells ungrown. Also a shrink relative to v10, so expected to lose too |
+| 0.47798 | `submission_v12_pairgrow15.csv`: opposite probe, one extra top-15% cellprob ring on paired ex-vivo cells only. Also below v10 |
+
+Public LB uses ~48% of test; finals use the other 52%. Prefer CV + public when picking two finals.
+
+## v8 experiment (completed; no improvement)
+
+`research/v8_colab.py` fine-tuned CellposeDINO-ViT-B for ex-vivo segmentation on three
+leave-one-mouse-out folds. Its selected masks scored 0.287 ex-vivo PQ and 0.509 estimated
+combined CV, below the existing masks (~0.397 ex-vivo PQ, ~0.513 estimated combined CV).
+The script therefore copied `submission_v7_grow15.csv` to `submission_v8.csv`; **v8 is
+byte-identical to v7_grow15, not a new candidate or a new Kaggle result**. Its mask-selection
+proxy also overweighted reachable matches and selected a weak threshold. A separate
+DINO-plus-existing-mask fusion test reduced ex-vivo PQ, so that route was abandoned.
+
+The follow-up `research/tight_ex_colab.py` and `research/v9_tight_candidate.py` have also
+completed. The best 96-px tight-crop Cellpose-SAM fold models reached ex-vivo PQ 0.401;
+blending their flows with the previous model reached 0.408 ex-vivo PQ, but the full
+held-out score after rematching was only 0.509, below the existing pipeline's roughly
+0.513 estimate. The script correctly reported `NO_CANDIDATE` and wrote no new CSV.
+`research/adaptive_boundary_cv.py` tested per-cell growth selection on held-out mice;
+its best PQ was 0.394, below fixed 10% cellprob-ranked growth (0.398). Neither result
+supports replacing `submission_v7_grow15.csv`.
+
+A separate thin-ring pixel classifier (`research/boundary_pixel_cv.py`) was tested
+leave-one-mouse-out. It raised ex-vivo PQ on two mice (0.467→0.492 and
+0.291→0.305), but the same threshold cut the third mouse from 0.394 to 0.257;
+pooled PQ fell to 0.350. This is another example of boundary conventions failing
+to transfer, so no test CSV was made from it.
+
+The sparse-label experiment in `research/partial_loss_probe.py`,
+`research/partial_loss_cv.py`, and `research/partial_candidate.py` is complete as a
+**rejected diagnostic**. Downweighting unlabeled background lifted the individual
+held-out ex-vivo PQ on `b2ba5e` from 0.291 to 0.381 and on `db6b8b` from 0.394
+to 0.451, but fell from 0.467 to 0.452 on `5d294c`. A single shared decoder
+setting reached only **0.367 pooled ex-vivo PQ** versus 0.390 for the existing
+masks. Full matching validation reached **0.468 combined CV**, below the
+existing ~0.513; no test CSV was generated. Per-region adaptive thresholds
+(`research/partial_calibration.py`) also failed out of mouse: 0.340–0.347 PQ
+versus 0.367 for the fixed decoder. Colab subsequently recycled the ephemeral
+runtime; these results are from the completed logs, not a public Kaggle score.
+No 0.65+ Kaggle score has been verified (best verified: 0.48893, v10).
+
+The moderate (0.25) background-weight experiment (`research/mid_loss_cv.py`)
+completed with **0.401 pooled ex-vivo PQ**, compared with 0.390 for the older
+ex-vivo masks. However, the full held-out score after matching was **0.501**,
+below the existing ~0.513 estimate. The conditional follow-up
+(`research/mid_candidate.py`) correctly printed `NO_CANDIDATE` and generated
+no new CSV. `submission_v7_grow15.csv` remains the best verified submission.
+The linked Colab notebook now handles the already-extracted dataset, avoids an
+expired temporary ZIP URL, and imports its config dependencies explicitly.
+No Drive checkpoint access was granted; Colab checkpoints are ephemeral.
+
+## Later research and candidate (public score unverified)
+
+The supplied `code_submission.zip` is for a **different constellation task**;
+its 0.95 score is not transferable. Its useful idea was to score registration
+hypotheses with an independent difference-of-Gaussians image signal, then use
+the gap to a competing hypothesis as a confidence measure. On held-out mice,
+`research/bandpass_rerank_probe.py` improved correct region poses from 31/47
+to 33/47 with a conservative gap gate, but the full matching F1 changed only
+from 0.457 to 0.461 after blending with existing high-confidence matches.
+`research/bandpass_test_candidate.py` produced the valid, **unscored**
+`submission_bandpass_candidate.csv`: identical masks to `v7_grow15`, with four
+additional pairs in two test regions. Do not treat this as a verified score
+gain or as a 0.65 solution.
+
+Two additional segmentation branches were tested before replacing any masks.
+Naive fusion of old held-out instance masks barely changed ex-vivo PQ
+(0.397 to 0.399 at best). A fluorescence-pretrained StarDist zero-shot pilot
+reached at most 0.113 ex-vivo PQ at normal thresholds. A partial-label
+StarDist fine-tune (unknown pixels masked from loss) reached just 0.278 PQ on
+three probed regions of one held-out mouse at its best tested threshold;
+the current masks average ~0.467 over that mouse. Both were rejected. The
+remaining pseudo-labelled Cellpose-SAM
+experiment is in `research/pseudo_cv_colab.py`; it must pass leave-one-mouse-out
+PQ and full-score validation before `research/pseudo_candidate_colab.py`
+can create a submission.
+
+## v10 / v11 (October 2026)
+
+**v10 `submission_v10_cpgate.csv` (unscored):** same masks/IDs as `v7_grow15`, plus one
+unlocked region. A region's pose now passes if margin ≥ 3 **or** its ex-vivo cellprob
+evidence z ≥ 5 (`research/cp_pose_lab.py`, `research/test_cp_apply.py`): the fraction of projected
+in-vivo centroids landing on ex-vivo cellprob > 0, versus the same pose shifted 15–45 px.
+Held-out: correct-pose z mean 7.1 vs wrong 2.9; pair F1 0.457 → 0.472 (29/31 kept regions
+correct vs 25/25), about +0.008 score, slightly optimistic because the gate was picked on the same data. On test it adds
+`d7a97c/dd13e1` (10 pairs), whose pairs match 10/10 of the older independent NCC registration.
+
+**v11 `CellMatch_v11_Colab.ipynb` (GPU, not run yet):** runs the pseudo-label Cellpose-SAM
+experiment (`pseudo_cv_colab.py` → `pseudo_candidate_colab.py`) from one upload,
+`cellmatch_v11_bundle.zip` (build with `make_colab_bundle.py`). It writes a CSV only if the
+full held-out score beats 0.5125, and also writes a cellprob-gated variant.
+
+**Near-miss analysis (held-out ex-vivo, IoU 0.5–0.75):** 1,024 near misses vs 2,140 TPs. On
+`5d294c` / `b2ba5e` they are too small (median pred/GT area 0.75 / 0.81, ~95% of pred inside GT);
+on `db6b8b` too big (1.41, covers the whole GT). Opposite conventions again.
+- `research/contour_probe.py`: an oracle-seeded relative-contrast contour (best fixed fraction of
+  peak − local background) reaches IoU > 0.75 on only 24% of GT cells, below the model's 58%.
+  Annotator boundaries are not a fixed intensity level; rejected.
+- `research/multihyp_probe.py`: submitting extra overlapping grown/shrunk copies of each cell adds
+  up to +550 ex-vivo TPs but the duplicate FPs drop PQ from 0.390 to 0.27–0.32; rejected.
+
+**Pseudo-label Cellpose-SAM, full run (v11 notebook, completed, rejected):**
+
+| Mouse | Old ex-vivo PQ | Pseudo, shared cellprob −0.5 | Pseudo, best per mouse |
+| --- | --- | --- | --- |
+| 5d294c | 0.467 | 0.473 | 0.473 (−0.5) |
+| b2ba5e | 0.291 | 0.362 | 0.362 (−0.5) |
+| db6b8b | 0.394 | 0.352 | 0.448 (+0.5) |
+
+Pooled 0.390 → 0.396 at the shared setting; the mice want opposite thresholds. Full held-out
+score after re-registration: 0.478 (best-PQ setting, F1 fell to 0.387) and 0.506 (most reachable
+pairs, ex PQ 0.333), both below 0.5125, so `NO_CANDIDATE`. Checkpoints are in
+`My Drive/cellmatch_v11/` of the Colab account.
+
+**v11: paired ex-vivo cells are drawn tighter (`research/shrink_probe.py`,
+`paired_shrink_cv.py`, `paired_shrink_exact.py`, `make_v11.py`).** Main finding: ex-vivo cells
+that annotators put in *verified pairs* are drawn tighter than other ex-vivo cells, in every
+mouse. Near-miss masks of verified cells are too big (pred/GT area ~1.35 in all three mice),
+while near misses of the whole population go either way. Of the false-positive pairs in the
+held-out v10 pipeline, 142 of 389 had the right in-vivo cell but an ex mask that just missed
+IoU 0.75. Removing the lowest-cellprob 25% of a cell's inner boundary pixels:
+
+| Verified ex cells IoU > 0.75 | base | ep25 | ep35 | ep50 |
+| --- | --- | --- | --- | --- |
+| 5d294c | 0.834 | 0.862 | 0.852 | 0.842 |
+| b2ba5e | 0.456 | 0.574 | 0.603 | 0.618 |
+| db6b8b | 0.750 | 0.847 | 0.851 | 0.874 |
+
+Shrinking *all* ex cells hurts PQ badly (0.390 → 0.351 at ep25), so the rule is applied
+only to cells we put in pairs. Exact held-out result (same poses, gate and classifier as v10):
+
+| Ex masks | Ex PQ | Pair F1 | Full held-out score |
+| --- | --- | --- | --- |
+| grow15 everywhere (v10) | 0.397 | 0.434 | 0.501 |
+| grow15, paired cells ungrown (`v11_pairbase`) | 0.405 | 0.484 | 0.528 |
+| grow15, paired cells ep25 (`v11_pairshrink25`) | 0.406 | 0.518 | **0.546** |
+
+Per-mouse pair F1 with ep25 rises in all three mice (0.547→0.569, 0.240→0.305, 0.474→0.536).
+A learned per-cell variant selector was worse than the fixed rule (0.534). Note that grow15
+*lowers* held-out pair F1 (0.472 → 0.434) yet raised the public score, so the test mice may draw
+paired cells larger than the training mice; the public score of `v11_pairshrink25` settles this.
+Even at the held-out estimate (+0.045), the expected public score is ~0.51–0.53, not 0.65.
+
+**Public result: 0.44957 (−0.039 vs v10).** The boundary convention for paired cells on the test
+mice is the opposite of the held-out estimate, consistent with grow15 helping on public while
+hurting held-out F1. Held-out CV cannot be trusted for ex-vivo boundary size; only the public
+score can, at the risk of overfitting its 48% split. `research/make_v12.py` builds the
+opposite probe (`submission_v12_pairgrow15.csv`), which scored **0.47798** (−0.011 vs v10).
+Both directions lose, so v10's paired-cell boundaries (grow15) are already at the public optimum.
+**Recommended finals: `submission_v10_cpgate.csv` (0.48893) and `submission_v7_grow15.csv` (0.47488).**
 
 ## How to run (main path)
 
 1. Upload `CellMatch_Colab.ipynb` to Colab and set `Runtime > Change runtime type > GPU`
    (T4 works; A100/L4 is much faster for Cellpose-SAM).
 2. Data: add Colab secrets `KAGGLE_USERNAME` / `KAGGLE_KEY`, or upload `testingpj-2.zip` when asked.
-3. `Runtime > Run all`. Allow the Google Drive prompt: checkpoints go to `MyDrive/cellmatch_models`,
-   so reruns skip finished training.
+3. `Runtime > Run all`. Checkpoints go to the Colab runtime's `models/` folder;
+   reruns in the same runtime skip finished training, but a runtime reset removes them.
 4. The last cell validates and downloads `submission.csv`. Stage 2 prints the chosen settings and
    the leave-one-mouse-out CV score (also saved as `best_config.json`).
 
 With Cellpose-SAM, runs are long on a T4: fold fine-tunes plus inference on large, upsampled
-ex-vivo images. Checkpoints on Drive are reused. The v5 `cellpose_long` variant adds six ~20-minute
+ex-vivo images. Checkpoints in the current runtime are reused. The v5 `cellpose_long` variant adds six ~20-minute
 fold fine-tunes on the first run. To save time, remove it from `CELLPOSE_VARIANTS` in the config
 cell.
 
-## How to run on NYU HPC (Torch)
+## How to run on NYU HPC (Cloud Bursting)
 
-Same pipeline as the notebook, as three chained SLURM jobs:
-1. **Setup (CPU):** installs a self-contained Python environment and pre-downloads the Cellpose
-   weights, all inside the project folder on `/scratch`.
-2. **`gpu`:** all training plus held-out and test predictions, cached to `cache/`.
-3. **`cpu`:** the search plus `submission.csv`.
+Use **Cloud Bursting**, not the Torch researcher cluster. Portal:
+https://ood.burst.hpc.nyu.edu (NYU VPN off-campus).
 
-The search runs as a CPU job because Torch cancels GPU jobs whose GPU utilization stays low, and
-the search is CPU-bound. Every step skips work already on disk, so rerunning `submit.sh` after a
-cancellation resumes where it stopped.
+**SLURM account (CS-GY-6923 DL course):** `cs_gy_6923-2026fa`  
+Partitions: `n2c48m24` (CPU), `g2-standard-12` (1× L4), etc. Jobs with low GPU use
+are auto-killed after ~20 minutes — our search stage is a separate CPU job for that reason.
 
-On your laptop (NYU VPN on):
+Same three-job chain (setup → gpu → cpu). Finished steps are skipped on rerun.
 
-```bash
-scp cellmatch_hpc.tar.gz <NetID>@dtn.torch.hpc.nyu.edu:/scratch/<NetID>/
-```
-
-On Torch (`ssh <NetID>@login.torch.hpc.nyu.edu`):
+From burst OOD Files / shell (code on burst `/scratch/$USER` — separate from Torch scratch):
 
 ```bash
-cd /scratch/$USER && tar xzf cellmatch_hpc.tar.gz && cd cellmatch
-my_slurm_accounts                 # pick your account, e.g. torch_pr_XXX_XXXXX
-bash submit.sh torch_pr_XXX_XXXXX
-squeue -u $USER                   # job states
-tail -f logs/cellmatch-*.out      # progress
-```
-
-Then copy the result back to your laptop:
-
-```bash
-scp <NetID>@dtn.torch.hpc.nyu.edu:/scratch/<NetID>/cellmatch/submission.csv .
+cd /scratch/$USER
+# clone or copy the project here if needed
+cd cellmatch
+bash submit.sh cs_gy_6923-2026fa
+squeue -u $USER
+tail -f logs/cellmatch-*.out
 ```
 
 Notes:
-- The chosen settings are saved in `best_config.json`. Delete it to force a new search.
-- If a job fails, its dependents stay pending with `DependencyNeverSatisfied`. Cancel them with
-  `scancel -u $USER`, fix the problem (see `logs/`), and rerun `submit.sh`.
-- `/scratch` is purged after 60 days without access. Copy anything you want to keep.
+- Torch login rejects this course account; submit only on the burst cluster.
+- Burst scratch ≠ Torch scratch; copy data if you prepared files on Torch.
+- `best_config.json` holds chosen settings. Delete to force a new search.
+- If a job fails, cancel dependents (`scancel -u $USER`), fix `logs/`, rerun `submit.sh`.
+
+## HPC registration unlock (Burst)
+
+`CellMatch_HPC_Unlock.ipynb` drives a separate CPU + GPU job chain that attacks registration,
+the current bottleneck (only 11/29 test regions get pairs). It adds a GPU dense pose scan with a
+soft mutual-nearest score, a wider CPU pose search, joint per-mouse registration, a learned pose
+verifier, a retrained pair classifier, and (by default) Cellpose-SAM ex-vivo self-training.
+Code: `hpc_unlock/`, `run_unlock.py`, `hpc/unlock/`. Spec: `.kiro/specs/hpc-registration-unlock/`.
+The old `CellMatch_HPC.ipynb` is unchanged apart from a pointer cell at the top; do not run both.
+
+**Outlook.** A public score above 0.65 is the target, **not guaranteed**. With v10 masks, better
+registration alone is estimated to reach about 0.60–0.63; going beyond needs self-training to
+validate out of mouse, which earlier attempts (v8–v11 above) did not. Held-out gains are estimates.
+`submission_v10_cpgate.csv` (0.48893) stays the safe final whatever this run produces.
+
+**1. Upload.** Copy the whole project folder to `/scratch/$USER/cellmatch` on Burst (OOD Files
+upload or `rsync -av`; `research/data/` is ~800 MB with files over GitHub's 100 MB limit, so not git).
+All paths resolve relative to the folder root, so no edits are needed.
+
+**2. Container files** (singularity mode only). Burst cannot see Greene's `/scratch/work/public`,
+so copy them once from a Burst login shell (`ssh greene`, then `ssh burst`). Cell 0 prints these
+with the real path filled in:
+
+```bash
+cd /scratch/$USER/cellmatch
+scp greene-dtn:/scratch/work/public/overlay-fs-ext3/overlay-15GB-500K.ext3.gz hpc/unlock/container/ \
+  && gunzip hpc/unlock/container/overlay-15GB-500K.ext3.gz
+ssh greene-dtn ls /scratch/work/public/singularity/ | grep -i cuda   # pick a cuda12 image if listed
+scp greene-dtn:/scratch/work/public/singularity/cuda11.8.86-cudnn8.7-devel-ubuntu22.04.2.sif hpc/unlock/container/
+```
+
+Use a CUDA 12 `.sif` instead of the CUDA 11.8 one if the `ls` lists one; `hpc_unlock/paths.find_sif`
+picks it up from `hpc/unlock/container/`.
+
+**Env modes** (`ENV_MODE` in Cell 1):
+- `singularity` (default): `.sif` + ext3 overlay. The setup job runs alone and mounts the overlay
+  `:rw` to install Miniconda and the pinned packages (numpy, scipy, opencv, scikit-learn, tifffile,
+  pandas, torch, plus cellpose unless self-training is disabled) into `/ext3`. Every Stage job
+  mounts it `:ro`, so several jobs can share it. Do not resubmit setup while chain jobs (or the
+  optional container kernel, `hpc/unlock/kernel/kernel.json`) hold the overlay.
+- `venv`: no container files. Setup sources `hpc/env.sh`, reuses `env/` if every core pin
+  matches, else creates `env_unlock/`.
+
+**Resources.** Account `cs_gy_6923-2026fa`. CPU Stages run on `n2c48m24`; the two GPU Stages
+(`gpu_scan`, `selftrain_gpu`) run alone on `g2-standard-12` (1× L4, default) or `c12m85-a100-1`
+(A100), so Burst's low-GPU-utilization auto-kill does not hit CPU work. Every job uses
+`--export=NONE` and `--dependency=afterok:<previous job>`.
+
+**3. Notebook steps** (open `CellMatch_HPC_Unlock.ipynb` in Burst OOD Jupyter, plain Python 3
+kernel; each code cell has a numbered instruction cell with the expected output):
+
+| Step | Cell | Does | Expected output |
+| --- | --- | --- | --- |
+| 0 | Upload / check | finds the project, prints the `scp` commands, lists container files, runs `python run_unlock.py check` | `WORK=/scratch/<you>/cellmatch`, `INPUT_CHECK_OK <N> inputs` (or one `INPUT_FAILED` line per missing path) |
+| 1 | Config | sets `ENV_MODE`, `GPU_PARTITION`, `DISABLE_SELFTRAIN`, σ, K, radii, `RESOURCES`; runs `validate()` | `config OK, run <fingerprint> ...` and the Stage plan, or `CONFIG ERROR` lines (then nothing can be submitted) |
+| 2 | Setup submit | submits setup alone (20–40 min first time) | `setup  n2c48m24  <job id>`, then `setup.json` once done |
+| 3 | Chain submit | `prep → gpu_scan → pose_search → joint → pairs → verifier → validate → [selftrain_prep → selftrain_gpu → selftrain_pairs] → assemble` | one `stage  partition  job id` line per Stage (11, or 8 with self-training disabled) |
+| 4 | Monitor | `squeue`/`sacct` states, last 40 log lines per Stage (`logs/unlock-<stage>-<job>.out`), done-markers | on failure: `FAILED <stage>`, its log and the resubmit command `python run_unlock.py submit --from <stage> --run <fp>` |
+| 5 | Report / download | shows the Run_Report and candidate CSVs, prints `scp` download commands | rendered report and `submission_v13_*.csv` paths, or `NO_CANDIDATE` |
+
+An optional Cell 6 resubmits from a chosen Stage. Finished Stages with valid done-markers are reused.
+
+**Outputs.** Checkpoints and done-markers go to `research/data/hpc/<fingerprint>/` (the fingerprint
+covers the settings that change results), setup info to `research/data/hpc/setup/setup.json`, and
+the Run_Report to `hpc_unlock_report.json` / `hpc_unlock_report.md` in the project root.
+
+**Candidates.** A CSV is written only if its leave-one-mouse-out full score beats the reproduced
+Baseline (v10: held-out full 0.5186, pair F1 0.472; validate stops if the reproduction is off by
+more than 0.005). Names: `submission_v13_<selection>_<gate>.csv` (`indep_cons`, `indep_aggr`,
+`joint_cons`, `joint_aggr`), which keep v10 masks/IDs and change only `match_pairs`, and
+`submission_v13_selftrain.csv`, which keeps v10 in-vivo masks and replaces ex-vivo masks and pairs.
+Each CSV passes `validate_submission.py` or is deleted. `submission_v10_cpgate.csv` and
+`submission_v7_grow15.csv` are hash-checked and never modified. With no accepted candidate the
+report says `NO_CANDIDATE` and the finals stay v10 + v7_grow15.
+
+**Local smoke test** (the only local pipeline run): `python run_unlock.py smoke` runs every Stage
+on 2 held-out regions in ≤ 300 s with ≤ 4 cores, writes only to `research/data/hpc_smoke/`, and
+prints `PASS/FAIL <stage>` lines. Unit tests: `python -m pytest tests/unlock -q`.
 
 ## Files
 
@@ -94,7 +319,8 @@ Notes:
 | `train_model.py` | Original local training CLI |
 | `export_features.py`, `tune_*.py` | Earlier analysis scripts; `features_cv.json` / `candidates_cv.json` are their saved held-out outputs |
 | `models/` | Local width-16 checkpoints from an interrupted local run (not used by the notebook) |
-| `submission*.csv` | Past submissions (`submission (2).csv` scored 0.37958) |
+| `submission*.csv` | Past submissions; **best verified: `submission_v10_cpgate.csv` (0.48893)**; finals: v10 + `submission_v7_grow15.csv` |
+| `research/` | Offline labs: Hough/vote/window registration, margin gate, pair classifier, mask grow, Colab helpers |
 
 ## Pipeline
 
@@ -197,32 +423,45 @@ Notes:
 | Wider NCC blur (5 px, 8 px) | worse: 22 / 46 and 12 / 46 regions aligned vs 26 / 46 at 2.4 px (ground-truth centers) |
 | Coarse-to-fine NCC search (0.5° / 1% steps around the top 5) | no gain (24 / 46 with ground-truth centers). In 11 regions the correlation genuinely prefers a wrong alignment, 6 of them in `b2ba5e` |
 | Checking for mirrored sections | none: every true transform has a positive determinant; `b2ba5e` mixes two rotations (about −15° and +9°) |
+| Classical ex-vivo soma proposals + leave-one-mouse-out classifier (`research/ex_candidate_boost.py`) | no robust gain: best permissive setting fell from PQ 0.390 to 0.327; strict setting added no cells |
+| Cell-level ex-vivo false-positive classifier (`research/ex_precision_filter.py`) | filtering lowered pooled held-out PQ and reachable verified pairs at every nonzero threshold |
+| Sparse-label Cellpose loss and adaptive decoder (`research/partial_loss_*`, `research/partial_calibration.py`) | strong on two individual mice but worse with a shared threshold; 0.367 pooled ex-vivo PQ and 0.468 full CV, so no submission |
+| Learned per-pixel mask-boundary correction (`research/boundary_pixel_cv.py`) | improves two mice but pooled ex-vivo PQ falls from 0.390 to 0.350; no submission |
+
+## Current matching stack (`research/`)
+
+Used for `submission_v7*.csv` (masks from the Cellpose ensemble; pairs rematched offline):
+
+1. **Per-region Hough** over angle/scale → top refined affine candidates.
+2. **Per-(mouse, canvas) vote** for consensus pose modes (angle ~3°, landing ~70 px).
+3. **Windowed Hough** (±5°, radius 120) around those modes, then RANSAC refine.
+4. **Margin gate:** keep pairs only if chosen score − best alternate pose ≥ 3 (25/25 correct on train).
+5. **Pair classifier:** `HistGradientBoosting` on mutual-nearest candidates (threshold ~0.03–0.05).
+6. **Ex-vivo grow (LB win):** expand each ex-vivo mask into the highest-cellprob boundary ring
+   (15% of ring pixels). IDs and pairs unchanged. Full 1-px grow/shrink still hurts; ranked grow helps.
+
+Held-out with this stack (v7 masks): in-vivo PQ ~0.74, ex-vivo PQ ~0.39, gated pair F1 ~0.46.
+Oracle registration with the same masks only reaches pair F1 ~0.52 → score ceiling ~**0.55**.
+Only ~10/29 test regions pass the margin gate; unlocking the rest without better masks still
+cannot hit 0.65.
 
 ## Limits and next steps
 
-- **Ceiling:** with the current masks and perfect registration the score would be roughly 0.40. The
-  binding constraint is segmentation at IoU > 0.75 on ~10 px cells. It caps matching recall, and
-  about half of the regions still misalign even with perfect cell centers, because the two images
-  share only ~24 verified cells per region.
-- **Ex-vivo segmentation is now the weakest part** (held-out PQ 0.354). The Stage 2 breakdown
-  (TP/FP/FN, mean IoU of true positives, near misses at IoU 0.5–0.75) shows whether the errors are
-  detections or boundaries.
-- **CV vs leaderboard:** v3 CV 0.450 vs leaderboard 0.402; v4 CV 0.485 vs 0.409. Part is selection
-  optimism. A larger part was the gate bug above, which dropped every pair for one test mouse.
-- **v4 PQ breakdown (held-out):** in-vivo TP 12,125 / FP 1,242 / FN 2,768, mean TP IoU 0.856, 690
-  near misses. Ex-vivo TP 2,545 / FP 2,702 / FN 2,971, mean TP IoU 0.825, 1,516 near misses. Each
-  near miss counts as both a false positive and a false negative; fixing them all would take
-  ex-vivo PQ to roughly 0.60.
-- **The near misses are not a correctable bias:** predicted/true area ratio splits ~50/50 (in-vivo)
-  and 37/62 (ex-vivo). Growing or shrinking every mask by one pixel is catastrophic (in-vivo PQ 0.51
-  → 0.25 on the local U-Net). Centroid offsets are under 0.2 px. Ground-truth masks are not ellipses
-  (median IoU 0.88 against a moment-matched ellipse) and never overlap.
-- **Mouse `b2ba5e`** (rectangular 737×1085 canvas) is misaligned almost everywhere (F1 ≈ 0.04).
-  Mice with rectangular canvases are the weakest case.
+- **Binding constraint is ex-vivo segmentation** (held-out PQ ~0.39, recall ~0.39). In-vivo is fine
+  (~0.74). To approach **0.65** need roughly ex-vivo PQ ~0.65 and matching F1 ~0.60 together.
+- **Retraining / ensemble masks** that shrunk ex-vivo cells lost LB score (0.39) even when CV PQ
+  looked similar — IoU > 0.75 is unforgiving on ~10 px cells; test mice behave like the
+  “larger GT” training mouse (`5d294c`).
+- **Boundary convention differs by mouse:** GT median area is larger than preds on `5d294c`,
+  smaller on `db6b8b`. Global shrink/grow fails; cellprob-ranked grow (15%) matched the public test.
+- **Registration:** stretch hypothesis `0.92_75` lifts train correct regions 31→35, but on test it
+  trades regions and does not unlock the 19 ungated ones. NCC and a learned pose scorer do not
+  safely beat the margin ≥ 3 gate.
+- **Data quirks:** `b2ba5e` is ~half resolution (cell diam ~8 vs ~11); two orientation modes
+  (~−15° / +9°). Test has mixed canvas sizes; regions `7754ed` / `f05266` are duplicates.
 - **Most promising next steps:**
-  1. If Cellpose-SAM wins, tune its fine-tuning (epochs, tile count, ex-vivo diameter) and try
-     combining it with the U-Net (e.g. keep Cellpose masks only where the U-Net core map agrees).
-  2. Shape- and appearance-aware partial cell-set matching (Chen et al.-style) instead of
-     center-only alignment, followed by non-rigid refinement (e.g. coherent point drift).
-  3. A learned pair classifier. For the metric, pairs missing from the verified list count as false
-     positives, so learning which cells annotators verify is aligned with the score.
+  1. Raise ex-vivo recall/PQ (diameter per mouse, longer fine-tunes, threshold/decode tuned for
+     reachable verified pairs — not PQ alone).
+  2. Then rematch with the vote+window+margin stack and rebuild the pair classifier on new
+     held-out masks.
+  3. Only after masks improve: try unlocking low-margin test regions (wider search / image cues).

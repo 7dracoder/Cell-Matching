@@ -1,0 +1,22 @@
+# Pinned environment for the unlock job chain (Req 1.3-1.5).
+# Versions match the local .venv (Python 3.12.13). Both env modes use the same pins.
+# One "name==version" per line; comments sit on their own lines so the setup
+# scripts can install each pin separately and name a failing package.
+#
+# Singularity mode only: Miniconda installer for /ext3/miniconda3 (Python 3.12).
+# MINICONDA_INSTALLER=Miniconda3-py312_26.7.1-1-Linux-x86_64.sh
+#
+# Core pins: an existing env is reused only if all six match exactly (reuse_env).
+numpy==2.5.3
+scipy==1.18.1
+opencv-python-headless==5.0.0.93
+scikit-learn==1.9.1
+tifffile==2026.9.20
+pandas==3.0.6
+# Extra pins (installed into a new env; not part of the reuse decision).
+scikit-image==0.26.0
+# Installed on every chain run from the default PyPI index (bundles the CUDA 12
+# runtime); the cu118 index is not used.
+torch==2.14.0
+# Installed only when self-training is enabled (provides Cellpose-SAM cpsam).
+cellpose==4.2.1.1

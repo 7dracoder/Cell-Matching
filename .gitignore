@@ -16,3 +16,16 @@ env/
 .pip_cache/
 cellpose_weights/
 *.partial
+cellmatch_v11_bundle.zip
+# HPC unlock chain: container files (scp'd on Burst) and run outputs
+hpc/unlock/container/
+research/data/hpc/
+research/data/hpc_smoke/
+logs/unlock-*
+env_unlock/
+hpc/unlock/models/
+hpc/unlock/.env_path
+
+# Regenerated experiment caches and local IDE metadata.
+research/data/
+.kiro/

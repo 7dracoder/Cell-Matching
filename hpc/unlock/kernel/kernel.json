@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/bin/bash",
+    "-c",
+    "W=\"${CELLMATCH_DIR:-/scratch/$USER/cellmatch}\"; exec \"$W/hpc/unlock/run_in_env.sh\" singularity 0 -- python -m ipykernel_launcher -f \"$0\"",
+    "{connection_file}"
+  ],
+  "display_name": "CellMatch unlock (singularity, read-only overlay)",
+  "language": "python",
+  "metadata": {
+    "note": "Optional. Copy to ~/.local/share/jupyter/kernels/cellmatch-unlock/ after setup has finished. Runs ipykernel_launcher inside singularity exec --overlay hpc/unlock/container/overlay-15GB-500K.ext3:ro <sif> (via run_in_env.sh). Shut it down before resubmitting setup, which mounts the overlay :rw."
+  }
+}
