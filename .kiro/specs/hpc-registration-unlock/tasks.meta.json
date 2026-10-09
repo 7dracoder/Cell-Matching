@@ -1,0 +1,631 @@
+{
+  "pbtResults": {
+    "8.2 Write property test for the λ = 0 reduction": {
+      "status": "passed",
+      "lastRunTimestamp": 1791423225304
+    },
+    "8.3 Write property test for joint validity and optimality": {
+      "status": "passed",
+      "lastRunTimestamp": 1791423226336
+    },
+    "8.4 Write property test for grouping and duplicates": {
+      "status": "passed",
+      "lastRunTimestamp": 1791423228009
+    }
+  },
+  "executionHistory": {
+    "1.1 Create the package skeleton and path resolution": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979234
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419995995
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420172396
+      }
+    ],
+    "1.3 Implement `hpc_unlock/config.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979265
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420187361
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420380828
+      }
+    ],
+    "1.5 Implement `hpc_unlock/checkpoint.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979288
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420189445
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420382112
+      }
+    ],
+    "2.1 Implement pins file and `hpc_unlock/inputs.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979316
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420428371
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421133241
+      }
+    ],
+    "2.4 Implement `run_unlock.py` driver": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979337
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421146775
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421663737
+      }
+    ],
+    "3.1 Write the setup and environment scripts": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979358
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420446753
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422192647
+      }
+    ],
+    "3.2 Write the Stage sbatch scripts": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979388
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422200028
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422864910
+      }
+    ],
+    "3.3 Implement `hpc_unlock/chain.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979408
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421682983
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422194329
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979427
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422867402
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423308669
+      }
+    ],
+    "5.1 Implement `hpc_unlock/prep.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979447
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421149230
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421668165
+      }
+    ],
+    "6.1 Implement the scan grid and FFT kernel in `hpc_unlock/gpu_scan.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979468
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420442476
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421134183
+      }
+    ],
+    "6.4 Implement peak selection and the gpu_scan Stage `compute`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979494
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421672194
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422196505
+      }
+    ],
+    "7.1 Implement `hpc_unlock/soft.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979513
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420443462
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421136527
+      }
+    ],
+    "7.2 Implement `hpc_unlock/pose_search.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979534
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422202778
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422865257
+      }
+    ],
+    "8.1 Implement `hpc_unlock/joint.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979554
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422870015
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423307141
+      }
+    ],
+    "9.1 Implement `hpc_unlock/pairs.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979575
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421674696
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422198656
+      }
+    ],
+    "9.3 Implement `hpc_unlock/verifier.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979596
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423309719
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423734414
+      }
+    ],
+    "10.1 Implement the metric functions in `hpc_unlock/validate.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979617
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420445656
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421138369
+      }
+    ],
+    "10.3 Implement Baseline reproduction, configurations and acceptance": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979639
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423735201
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791424363035
+      }
+    ],
+    "11. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979657
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791424365155
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425087679
+      }
+    ],
+    "12.1 Implement `hpc_unlock/selftrain_prep.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979677
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791424367306
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425087867
+      }
+    ],
+    "12.4 Implement `hpc_unlock/selftrain_gpu.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979698
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425089974
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426016728
+      }
+    ],
+    "12.6 Implement `hpc_unlock/selftrain_pairs.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979718
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425102117
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426018370
+      }
+    ],
+    "13.1 Implement `hpc_unlock/report.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979736
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421150884
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421668502
+      }
+    ],
+    "13.3 Implement `hpc_unlock/assemble.py`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979757
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791424369883
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425088088
+      }
+    ],
+    "14.1 Implement `hpc_unlock/smoke.py` and the `smoke` subcommand": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979776
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426039810
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426744030
+      }
+    ],
+    "14.2 Run the local smoke test and fix failures": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979796
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426748005
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791427007824
+      }
+    ],
+    "15.1 Create `CellMatch_HPC_Unlock.ipynb`": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979815
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425103045
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426019491
+      }
+    ],
+    "15.3 Add the pointer cell and README section": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979837
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426040268
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426744068
+      }
+    ],
+    "16. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791419979857
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791427014481
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791427188791
+      }
+    ],
+    "1. Package skeleton, config and checkpointing": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420382144
+      }
+    ],
+    "1.2 Write property test for worker count": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420405025
+      },
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791420442173
+      }
+    ],
+    "2. Input check, pins and the driver": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421663767
+      }
+    ],
+    "5. Prep Stage": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791421668193
+      }
+    ],
+    "6. GPU dense pose scan": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422196545
+      }
+    ],
+    "3. SLURM scripts and chain orchestration": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422864942
+      }
+    ],
+    "7. Pose search": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791422865282
+      }
+    ],
+    "8. Joint registration": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423307188
+      }
+    ],
+    "9. Pair classifier and verifier": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791423734451
+      }
+    ],
+    "10. Validation": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791424363061
+      }
+    ],
+    "13. Assembly and Run_Report": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791425088115
+      }
+    ],
+    "12. Self-training Stages": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426018397
+      }
+    ],
+    "15. Notebook and docs": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791426744108
+      }
+    ],
+    "14. Local smoke test": [
+      {
+        "executionId": "d987c3bf-10b0-435c-817e-08a08c7b163c",
+        "chatSessionId": "sess_7e93f1c7-d57c-4888-b9be-cc611ff510ba",
+        "timestamp": 1791427007856
+      }
+    ]
+  }
+}
